@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FT — prévia do site</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111b18; --green:#154633; --green2:#1d5a42;
+  --y:#f4b40f; --red:#ff5a47; --ice:#cfe9ff;
+  --fg:#f3f1ea; --muted:#93a39d; --dim:rgba(243,241,234,.16);
+  --mono:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Urbanist,ui-sans-serif,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.tag{position:fixed;top:10px;right:10px;z-index:40;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);background:rgba(17,27,24,.8);border:1px solid rgba(243,241,234,.1);padding:5px 10px;border-radius:99px;
+  backdrop-filter:blur(6px)}
+main{position:relative}
+
+/* ---------- o fio e o raio que corre nele ---------- */
+.layer{position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:visible}
+#wire{z-index:1}
+#runner-layer{z-index:5}
+#wire path{fill:none;stroke-linejoin:miter}
+#wire-base{stroke:rgba(244,180,15,.13);stroke-width:1.5}
+#wire-glow{stroke:rgba(244,180,15,.26);stroke-width:9}
+#wire-core{stroke:var(--y);stroke-width:2.5}
+#wire-hot{stroke:#fff3c4;stroke-width:1}
+#runner{fill:var(--y);opacity:0;filter:drop-shadow(0 0 6px rgba(244,180,15,.9)) drop-shadow(0 0 22px rgba(244,180,15,.55))}
+.spark{fill:none;stroke:#ffe9a3;stroke-width:1.2;animation:fade .32s ease-out forwards}
+@keyframes fade{from{opacity:1}to{opacity:0}}
+.pulse{fill:none;stroke:var(--y);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:pulse .7s ease-out forwards}
+@keyframes pulse{from{opacity:.9;transform:scale(.2)}to{opacity:0;transform:scale(1)}}
+
+/* ---------- topo ---------- */
+.hero{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:72px 22px 110px;text-align:center;
+  background:radial-gradient(120% 70% at 50% 35%,rgba(29,90,66,.55),transparent 70%)}
+.logo{width:min(66vw,340px);height:auto;overflow:visible}
+.logo .lF,.logo .lT{fill:var(--fg);opacity:0;transform:translateY(10px);transition:opacity .7s .38s,transform .7s .38s}
+.logo .slot{fill:none;stroke:rgba(244,180,15,.45);stroke-width:7;stroke-dasharray:22 18;opacity:0;transition:opacity .4s}
+.logo .bolt{fill:var(--y);clip-path:inset(0 0 100% 0);filter:drop-shadow(0 0 22px rgba(244,180,15,.5))}
+.struck .logo .bolt{clip-path:inset(0 0 0 0);transition:clip-path .26s cubic-bezier(.8,0,.3,1)}
+.struck .logo .lF,.struck .logo .lT{opacity:1;transform:none}
+.detached .logo .bolt{opacity:0}
+.detached .logo .slot{opacity:1}
+.logo-sub{margin:14px 0 0;line-height:1.6;font-size:clamp(12px,3.4vw,16px);letter-spacing:.14em;font-weight:500;opacity:0;transition:opacity .7s .6s}
+.hero h1{margin:44px 0 0;font-size:clamp(2.1rem,9vw,4.4rem);line-height:1.02;letter-spacing:-.03em;font-weight:800;
+  opacity:0;transform:translateY(14px);transition:opacity .8s .75s,transform .8s .75s}
+.hero .lead{margin:18px auto 0;max-width:32ch;font-size:clamp(1rem,4.2vw,1.2rem);line-height:1.45;color:var(--muted);
+  opacity:0;transition:opacity .8s .95s}
+.struck .logo-sub,.struck .lead{opacity:1}
+.struck h1{opacity:1;transform:none}
+.hint{position:absolute;bottom:30px;left:0;right:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  opacity:0;transition:opacity .6s 1.4s}
+.struck .hint{opacity:.8}
+.detached .hint{opacity:0;transition-delay:0s}
+.flash{position:fixed;inset:0;background:#fff4cf;opacity:0;pointer-events:none;z-index:30}
+.struck .flash{animation:flash .55s .22s ease-out}
+@keyframes flash{0%{opacity:0}12%{opacity:.42}100%{opacity:0}}
+
+/* ---------- seções ---------- */
+.blk{position:relative;z-index:2;min-height:86svh;padding:12svh 22px 10svh 62px;max-width:1180px;margin:0 auto;
+  display:grid;align-content:center;gap:0}
+.kicker{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);transition:color .3s}
+h2{margin:14px 0 0;font-size:clamp(2.2rem,10vw,4.4rem);line-height:1;letter-spacing:-.035em;font-weight:800;color:var(--dim)}
+.txt p{margin:22px 0 0;max-width:38ch;font-size:clamp(1.02rem,4.2vw,1.2rem);line-height:1.5;color:var(--muted);opacity:.35;transition:opacity .6s .15s}
+.on .kicker{color:var(--y)}
+.on h2{animation:neon .9s linear forwards}
+.on .txt p{opacity:1}
+@keyframes neon{
+  0%{color:var(--dim)}6%{color:var(--fg);text-shadow:0 0 24px rgba(244,180,15,.45)}10%{color:var(--dim);text-shadow:none}
+  18%{color:var(--fg)}22%{color:var(--dim)}30%{color:var(--fg);text-shadow:0 0 30px rgba(244,180,15,.35)}
+  100%{color:var(--fg);text-shadow:0 0 0 transparent}}
+.scene{margin-top:34px;min-width:0}
+.note{margin-top:14px;font-size:12px;color:var(--muted);opacity:.7}
+
+/* cena 1 — supervisório da linha parada */
+.hmi{border-radius:12px;background:#0a110f;border:1px solid rgba(243,241,234,.08);padding:16px 16px 18px;
+  box-shadow:0 30px 60px -30px #000;font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.hmi-top{display:flex;justify-content:space-between;gap:10px;color:var(--muted);padding-bottom:12px;border-bottom:1px solid rgba(243,241,234,.07)}
+.clock{color:var(--red)}
+.on .clock{color:var(--y)}
+.hmi .row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px dashed rgba(243,241,234,.08);
+  font:600 15px/1 Urbanist,sans-serif;letter-spacing:0}
+.st{font:700 11px/1 var(--mono);letter-spacing:.08em;padding:6px 8px;border-radius:4px}
+.st-off{color:var(--red);background:rgba(255,90,71,.12);animation:blink 1s steps(1) infinite}
+.st-on{display:none;color:#13201c;background:var(--y)}
+.on .st-off{display:none}.on .st-on{display:inline-block}
+@keyframes blink{50%{opacity:.25}}
+.risk{margin-top:16px;display:flex;align-items:center;gap:12px;color:var(--muted)}
+.risk i{flex:1;height:6px;background:rgba(243,241,234,.06);border-radius:3px;overflow:hidden}
+.risk em{display:block;height:100%;width:0;background:var(--red);transition:width 1s linear}
+.on .risk em{width:0!important;transition:width .7s}
+#s-problema:not(.on) .hmi{animation:jit 2.6s infinite}
+@keyframes jit{0%,100%{transform:none;opacity:1}61%{transform:translate(1px,-1px);opacity:.75}62%{transform:translate(-2px,1px);opacity:1}
+  63%{transform:none;opacity:.6}64%{opacity:1}88%{transform:translateX(1px)}89%{transform:none}}
+
+/* cena 2 — painel de comando */
+.panel{position:relative;padding:50px 18px 10px;border-radius:14px;
+  background:linear-gradient(160deg,#2a3633,#1b2422 60%,#161e1c);border:1px solid rgba(255,255,255,.06);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 40px 70px -35px #000}
+.plate{position:absolute;top:16px;left:18px;font:700 10px/1 var(--mono);letter-spacing:.14em;color:#1b2422;background:#c9cfc8;padding:5px 8px;border-radius:3px}
+.screw{position:absolute;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#8a948f,#3a4441)}
+.screw::after{content:"";position:absolute;left:1px;right:1px;top:4px;height:1px;background:#222;transform:rotate(35deg)}
+.screw.a{top:10px;right:10px}.screw.b{bottom:10px;right:10px}.screw.c{bottom:10px;left:10px}
+.svc{list-style:none;margin:0;padding:0}
+.svc li{display:grid;grid-template-columns:14px 30px 1fr;gap:14px;align-items:center;padding:15px 0;border-top:1px solid rgba(0,0,0,.35);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset;font-size:clamp(1.02rem,4.4vw,1.2rem);font-weight:700;color:rgba(243,241,234,.32);transition:color .35s}
+.svc small{display:block;margin-top:3px;font-size:.78em;font-weight:500;color:var(--muted)}
+.led{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4c4220,#211d0e);box-shadow:inset 0 0 0 2px #0e1412;transition:background .15s,box-shadow .15s}
+.knob{width:30px;height:30px;border-radius:50%;position:relative;background:radial-gradient(circle at 40% 35%,#46524f,#1a2220);
+  border:1px solid rgba(255,255,255,.08);transform:rotate(-55deg);transition:transform .4s cubic-bezier(.5,1.8,.5,1)}
+.knob::after{content:"";position:absolute;left:50%;top:3px;width:4px;height:12px;margin-left:-2px;border-radius:2px;background:#c9cfc8}
+.svc li.on{color:var(--fg)}
+.svc li.on .led{background:radial-gradient(circle at 35% 35%,#fff6c8,var(--y) 55%,#b07e00);box-shadow:0 0 14px 3px rgba(244,180,15,.6),inset 0 0 0 2px #0e1412}
+.svc li.on .knob{transform:rotate(35deg)}
+
+/* cena 3 — câmara fria */
+.temp{position:relative;border-radius:14px;padding:22px 20px;background:#0a110f;border:1px solid rgba(207,233,255,.12);
+  font-family:var(--mono);overflow:hidden}
+.temp .tl{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.temp .tv{display:block;margin-top:14px;font:800 clamp(3.6rem,19vw,6.4rem)/1 Urbanist,sans-serif;letter-spacing:-.04em;color:var(--red);
+  font-variant-numeric:tabular-nums;transition:color .4s}
+.temp .tv sup{font-size:.32em;vertical-align:top;margin-left:4px;letter-spacing:0}
+.temp .ts{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.12em;padding:6px 8px;border-radius:4px;color:var(--red);background:rgba(255,90,71,.12)}
+.temp.ok .tv{color:var(--ice);text-shadow:0 0 30px rgba(207,233,255,.35)}
+.temp.ok .ts{color:#0d1a22;background:var(--ice)}
+.temp .spark-line{position:absolute;left:0;right:0;bottom:0;height:44px;opacity:.7}
+.frost{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 55%,rgba(190,225,255,.10) 75%,rgba(225,242,255,.38) 100%)}
+.frost::after{content:"";position:absolute;inset:0;opacity:.55;mix-blend-mode:screen;
+  -webkit-mask:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 58%,#000 100%);mask:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 58%,#000 100%);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .9 0 0 0 0 .96 0 0 0 0 1 0 0 0 1.6 -.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* cena 4 — obras (a roda entra aqui) */
+/* a roda de obras (Works Wheel, componente React em roda.js): cores da FT só pelas variáveis --ww-*.
+   A roda fica presa no meio da tela e a rolagem da página gira as peças (ver "roda de obras" no script). */
+.ww-pin{--wh:600px;position:sticky;top:calc((100svh - var(--wh)) / 2);height:var(--wh);margin:0 -22px 0 -62px}
+.ft-roda{height:100%}
+.ww-track{position:relative;height:calc(600px + 11 * 40svh)}
+.ww-snap{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;pointer-events:none}
+html{scroll-snap-type:y proximity}
+/* o seletor: régua com um LED por obra e a alavanca que desce com a rolagem */
+.ww-sel{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;z-index:2}
+.ww-count{font:600 10px/1 var(--mono);letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.ww-count b{color:var(--y);font-weight:700}
+.ww-rail{position:relative;width:26px;height:min(300px,44svh);border-radius:13px;background:linear-gradient(#0b1411,#16231f);
+  border:1px solid rgba(243,241,234,.1);box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
+.ww-rail button{position:absolute;left:50%;width:26px;height:22px;margin:-11px 0 0 -13px;padding:0;border:0;background:none;cursor:pointer}
+.ww-rail button::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;
+  background:rgba(243,241,234,.18);transition:background .3s,box-shadow .3s}
+.ww-rail button.on::after{background:var(--y);box-shadow:0 0 8px 2px rgba(244,180,15,.55)}
+.ww-knob{position:absolute;left:50%;top:0;width:34px;height:18px;margin:-9px 0 0 -17px;border-radius:5px;pointer-events:none;
+  background:linear-gradient(#ffd25a,var(--y) 55%,#b07e00);box-shadow:0 3px 10px rgba(0,0,0,.5),0 0 14px rgba(244,180,15,.45);transition:top .12s linear}
+.ww-knob::after{content:"";position:absolute;left:8px;right:8px;top:8px;height:2px;border-radius:1px;background:rgba(19,32,28,.45)}
+.ww-hint{position:absolute;left:0;right:0;bottom:3%;margin:0;display:flex;justify-content:center;align-items:center;gap:8px;
+  font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);transition:opacity .5s;pointer-events:none}
+.ww-hint svg{width:10px;height:18px;color:var(--y);animation:ww-nudge 1.4s ease-in-out infinite}
+@keyframes ww-nudge{50%{transform:translateY(4px)}}
+.ww-pin.used .ww-hint{opacity:0}
+.ft-roda .ww-index{display:none}
+.ft-roda .ww-root{--ww-bg:transparent;--ww-fg:#f3f1ea;--ww-muted:#93a39d;--ww-card:#1a2826;--ww-shadow:rgba(244,180,15,.18);--ww-chip:rgba(17,27,24,.85)}
+/* quem gira é a rolagem da página: a roda não pega toque nem arraste (no iPhone o dedo ficava preso nela) */
+.ft-roda .ww-stage{pointer-events:none;touch-action:auto !important}
+.ft-roda{-webkit-mask-image:linear-gradient(90deg,transparent 0 58px,#000 120px);mask-image:linear-gradient(90deg,transparent 0 58px,#000 120px)}
+@media (max-width:859px){
+  .ft-roda .ww-title{top:2.5%;left:0;right:0;text-align:center;transform:none}
+}
+@media (min-width:860px){
+  .ft-roda{-webkit-mask-image:none;mask-image:none}
+  .ww-pin{--wh:min(78svh,720px);margin:0}
+  .ww-sel{right:2%}
+  #s-obras{grid-template-columns:1fr !important}
+  #s-obras .scene{margin-top:28px}
+  .ww-track{height:calc(min(78svh,720px) + 11 * 40svh)}
+}
+.reel-hint{margin:6px 0 0;font-size:12px;color:var(--muted);opacity:.7}
+
+/* cena 5 — globo */
+.globe{position:relative;max-width:520px;margin:0 auto}
+#globe{display:block;width:100%;aspect-ratio:1;touch-action:pan-y;cursor:grab}
+#globe:active{cursor:grabbing}
+.g-leg{display:flex;justify-content:center;gap:18px;margin-top:6px;font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.g-leg span{display:flex;align-items:center;gap:7px}
+.g-leg i{width:8px;height:8px;border-radius:50%;background:var(--y)}
+.g-leg .k0{box-shadow:0 0 0 3px rgba(244,180,15,.25)}
+.g-leg .k2{background:var(--fg)}
+.g-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px}
+.g-list li{padding:6px 10px;border-radius:99px;border:1px solid rgba(244,180,15,.35);font-size:12.5px;font-weight:600;color:var(--fg)}
+.g-list li.x{border-color:rgba(243,241,234,.3)}
+.brands{margin-top:22px;text-align:center}
+.brands span{display:block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--y);margin-bottom:10px}
+.brands p{margin:0;font-size:14px;font-weight:600;line-height:1.7;color:var(--muted)}
+.brands b{font-weight:600;white-space:nowrap}
+.g-note{margin:10px 0 0;text-align:center;font-size:12px;color:var(--muted);opacity:.7}
+
+/* ---------- final ---------- */
+.cta{text-align:left}
+.mini{width:120px;height:auto;margin-bottom:26px;overflow:visible}
+.mini .lF,.mini .lT{fill:var(--fg)}
+.mini .slot{fill:none;stroke:rgba(244,180,15,.5);stroke-width:9;stroke-dasharray:24 20;transition:opacity .3s}
+.mini .bolt{fill:var(--y);clip-path:inset(0 0 100% 0);filter:drop-shadow(0 0 18px rgba(244,180,15,.6))}
+.cta.on .mini .bolt{clip-path:inset(0);transition:clip-path .28s .05s cubic-bezier(.8,0,.3,1)}
+.cta.on .mini .slot{opacity:0}
+.btn{display:inline-flex;align-items:center;gap:12px;margin-top:34px;padding:18px 26px;border-radius:12px;
+  font:700 1.08rem/1 Urbanist,sans-serif;text-decoration:none;color:var(--muted);border:1.5px solid rgba(244,180,15,.3);
+  transition:background .35s,color .35s,box-shadow .5s,border-color .35s;justify-self:start}
+.btn svg{width:14px;height:20px;fill:currentColor}
+.cta.on .btn{background:var(--y);color:#13201c;border-color:var(--y);box-shadow:0 0 0 6px rgba(244,180,15,.12),0 12px 50px -8px rgba(244,180,15,.65)}
+.small{margin-top:14px;font-size:13px;color:var(--muted)}
+.contact{list-style:none;margin:34px 0 0;padding:0;display:grid;gap:16px;font-size:15px;line-height:1.5;color:var(--fg)}
+.contact span{display:block;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--y);margin-bottom:6px}
+.contact a{color:var(--fg);text-decoration:none;overflow-wrap:anywhere}
+.contact a:hover{color:var(--y)}
+footer{position:relative;z-index:2;padding:30px 22px 40px;text-align:center;font-size:12px;color:var(--muted);border-top:1px solid rgba(243,241,234,.06)}
+
+@media (min-width:860px){
+  .blk{padding-left:110px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);column-gap:64px;align-items:center}
+  .scene{margin-top:0}
+  .cta{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .on h2{color:var(--fg)}
+}
+</style>
+</head>
+<body>
+<div class="tag">Prévia para aprovação</div>
+<div class="frost" id="frost"></div>
+<main id="page">
+  <svg id="wire" class="layer" aria-hidden="true">
+    <path id="wire-base"/><path id="wire-glow"/><path id="wire-core"/><path id="wire-hot"/>
+    <g id="fx"></g>
+  </svg>
+  <svg id="runner-layer" class="layer" aria-hidden="true">
+    <path id="runner" d="M840 50L1008 50L832 522Q816 548 822 551L1076 555L1027 636L588 1290L807 683L556 737Z"/>
+  </svg>
+
+  <section class="hero" id="hero">
+    <div class="flash"></div>
+    <svg class="logo" viewBox="40 40 1560 1260" role="img" aria-label="FT Elétrica e Automação">
+      <path class="lF" d="M53 354Q360 248 692 235L611 440Q440 454 286 486L286 648L523 625L465 814L285 835L284 1066L53 1137Z"/>
+      <path class="lT" d="M1010 237Q1230 248 1415 303Q1530 338 1578 370L1579 573L1435 622Q1425 578 1438 563Q1458 548 1506 540Q1470 517 1389 494L1387 1148Q1360 1150 1330 1127L1174 1055L1174 456Q1060 437 944 431Z"/>
+      <path class="slot" d="M840 50L1008 50L832 522Q816 548 822 551L1076 555L1027 636L588 1290L807 683L556 737Z"/>
+      <path class="bolt" id="logo-bolt" d="M840 50L1008 50L832 522Q816 548 822 551L1076 555L1027 636L588 1290L807 683L556 737Z"/>
+    </svg>
+    <p class="logo-sub">ELÉTRICA, AUTOMAÇÃO<br>E SOLUÇÕES INTELIGENTES</p>
+    <h1>Energia que não<br>para a sua linha.</h1>
+    <p class="lead">Elétrica e automação industrial para frigoríficos, túneis de congelamento e máquinas industriais. De São Miguel do Oeste para o Brasil e o mundo.</p>
+    <div class="hint" id="hint">role para ligar</div>
+  </section>
+
+  <section class="blk" id="s-problema" data-node data-anchor=".hmi">
+    <div class="txt">
+      <span class="kicker">01 · O problema</span>
+      <h2>Linha parada<br>não espera.</h2>
+      <p>No frigorífico, uma pane no painel para o abate, a desossa e a câmara fria ao mesmo tempo. Cada minuto sem energia é produto em risco.</p>
+    </div>
+    <div class="scene" aria-hidden="true">
+      <div class="hmi">
+        <div class="hmi-top"><span>LINHA 2</span><span class="clock" id="clock">PARADA 00:00</span></div>
+        <div class="row"><span>Abate</span><b class="st st-off">PARADA</b><b class="st st-on">OPERANDO</b></div>
+        <div class="row"><span>Desossa</span><b class="st st-off">PARADA</b><b class="st st-on">OPERANDO</b></div>
+        <div class="row"><span>Câmara fria</span><b class="st st-off">SEM ENERGIA</b><b class="st st-on">OPERANDO</b></div>
+        <div class="risk"><span>PRODUTO EM RISCO</span><i><em id="risk"></em></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="s-servicos" data-node>
+    <div class="txt">
+      <span class="kicker">02 · O que a FT liga</span>
+      <h2>Do quadro<br>ao CLP.</h2>
+      <p>Do quadro de força ao robô na linha: instalação, automação e manutenção de quem trabalha dentro da indústria.</p>
+    </div>
+    <div class="scene">
+      <div class="panel">
+        <span class="plate">QGBT · FT-01</span><i class="screw a"></i><i class="screw b"></i><i class="screw c"></i>
+        <ul class="svc">
+          <li data-node><span class="led"></span><span class="knob"></span><span>Instalações elétricas industriais<small>Instalação e infraestrutura elétrica da planta</small></span></li>
+          <li data-node><span class="led"></span><span class="knob"></span><span>Painéis elétricos<small>Montagem e instalação</small></span></li>
+          <li data-node><span class="led"></span><span class="knob"></span><span>Automação de processos<small>Inversores de frequência e sensores industriais</small></span></li>
+          <li data-node><span class="led"></span><span class="knob"></span><span>Máquinas e robótica<small>Instalação, manutenção, adequações e melhorias de máquinas e sistemas robotizados</small></span></li>
+          <li data-node><span class="led"></span><span class="knob"></span><span>Manutenção elétrica<small>Preventiva e corretiva</small></span></li>
+        </ul>
+      </div>
+      <div class="brands"><span>Experiência com</span><p><b>Siemens</b> · <b>WEG</b> · <b>Schneider Electric</b> · <b>Allen‑Bradley / Rockwell</b> · <b>ABB</b> · <b>SEW‑Eurodrive</b> · <b>Keyence</b> · <b>Banner</b></p></div>
+    </div>
+  </section>
+
+  <section class="blk" id="s-frio" data-node data-anchor=".temp">
+    <div class="txt">
+      <span class="kicker">03 · Frio</span>
+      <h2>O frio<br>não pode<br>falhar.</h2>
+      <p>Em câmaras frias e túneis de congelamento: comando, sensores e alarmes que seguram a temperatura onde o produto precisa, sem susto às três da manhã.</p>
+    </div>
+    <div class="scene" aria-hidden="true">
+      <div class="temp" id="temp">
+        <div class="tl"><span>CÂMARA 03 · CONGELADOS</span><span>SP −18,0</span></div>
+        <b class="tv"><span id="tv">−9,4</span><sup>°C</sup></b>
+        <span class="ts" id="ts">ALARME · SUBINDO</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="s-obras" data-node>
+    <div class="txt">
+      <span class="kicker">04 · Obras</span>
+      <h2>Feito<br>em campo.</h2>
+      <p>Obras industriais de grande porte, em frigoríficos e plantas industriais, e prestação de serviços para a Agil Equipamentos.</p>
+    </div>
+    <div class="scene">
+      <div class="ww-track">
+        <div class="ww-pin">
+          <div class="ft-roda" id="roda-obras"></div>
+          <div class="ww-sel">
+            <span class="ww-count">OBRA <b id="ww-n">01</b>/<span id="ww-t">09</span></span>
+            <div class="ww-rail" id="ww-rail"><i class="ww-knob" id="ww-knob"></i></div>
+          </div>
+          <p class="ww-hint"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M6 1v18M2 5l4-4 4 4M2 15l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Role para ver as obras</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="s-alcance" data-node data-anchor=".globe" data-anchor-off="-60">
+    <div class="txt">
+      <span class="kicker">05 · Alcance</span>
+      <h2>Do Oeste<br>catarinense<br>para o mundo.</h2>
+      <p>Base em São Miguel do Oeste, equipes mobilizadas até onde a planta estiver, com várias frentes de trabalho ao mesmo tempo, no Brasil e no exterior.</p>
+    </div>
+    <div class="scene">
+      <div class="globe">
+        <canvas id="globe" aria-label="Globo com arcos de energia saindo de São Miguel do Oeste"></canvas>
+        <div class="g-leg"><span><i class="k0"></i>Base</span><span><i class="k1"></i>Brasil</span><span><i class="k2"></i>Exterior</span></div>
+        <ul class="g-list"><li>Santa Catarina</li><li>Paraná</li><li>Goiás</li><li>Pernambuco</li><li class="x">Paraguai</li><li class="x">Argentina</li><li class="x">Arábia Saudita</li></ul>
+        <p class="g-note">arraste para girar</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk cta" id="s-cta" data-node data-end>
+    <div class="txt">
+      <svg class="mini" viewBox="40 40 1560 1260" aria-hidden="true">
+        <path class="lF" d="M53 354Q360 248 692 235L611 440Q440 454 286 486L286 648L523 625L465 814L285 835L284 1066L53 1137Z"/>
+        <path class="lT" d="M1010 237Q1230 248 1415 303Q1530 338 1578 370L1579 573L1435 622Q1425 578 1438 563Q1458 548 1506 540Q1470 517 1389 494L1387 1148Q1360 1150 1330 1127L1174 1055L1174 456Q1060 437 944 431Z"/>
+        <path class="slot" d="M840 50L1008 50L832 522Q816 548 822 551L1076 555L1027 636L588 1290L807 683L556 737Z"/>
+        <path class="bolt" d="M840 50L1008 50L832 522Q816 548 822 551L1076 555L1027 636L588 1290L807 683L556 737Z"/>
+      </svg>
+      <span class="kicker">06 · Contato</span>
+      <h2>Precisa de<br>energia na<br>sua planta?</h2>
+    </div>
+    <a class="btn" href="https://wa.me/5549998257488?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20FT." target="_blank" rel="noopener"><svg viewBox="0 0 12 18"><path d="M7 0H12L8 7H11L3 18L5.5 9H2Z"/></svg>Falar com a FT no WhatsApp</a>
+    <ul class="contact">
+      <li><span>Telefone</span><a href="tel:+5549998257488">(49) 99825-7488</a></li>
+      <li><span>E-mail</span><a href="mailto:ftservisoseletricosindustriais@gmail.com">ftservisoseletricosindustriais@gmail.com</a></li>
+      <li><span>Endereço</span>Rua Almirante Tamandaré, 1359, Centro<br>São Miguel do Oeste – SC · 89900-000</li>
+    </ul>
+  </section>
+
+  <footer>FT Serviços Elétricos Industriais e Residenciais LTDA<br><span style="white-space:nowrap">CNPJ 51.007.315/0001-00</span> ·São Miguel do Oeste – SC</footer>
+</main>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const main = $('#page'), hero = $('#hero'), fx = $('#fx'), runner = $('#runner');
+  const layers = $$('.layer');
+  const paths = ['#wire-base', '#wire-glow', '#wire-core', '#wire-hot'].map($);
+  const live = paths.slice(1);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const BOLT = { cx: 816, cy: 670, h: 1240 }; // o raio no desenho do logo
+
+  let pts = [], cum = [], total = 0, nodes = [], sy = 0, raf = 0, ready = false, lastFx = 0;
+  let from = null, start = null, runH = 30;
+
+  const box = el => { const r = el.getBoundingClientRect(), m = main.getBoundingClientRect();
+    return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height }; };
+
+  function build() {
+    const W = main.clientWidth, H = main.scrollHeight, small = W < 860;
+    layers.forEach(l => { l.setAttribute('viewBox', `0 0 ${W} ${H}`); l.style.height = H + 'px'; });
+    const X = box($('.blk')).x + (small ? 28 : 54);
+    const w = small ? 11 : 16, a = small ? 26 : 38;
+    runH = small ? 30 : 40;
+
+    // de onde o raio se solta (o raio do logo) e onde ele pega o fio (embaixo do texto do topo)
+    const lb = box($('#logo-bolt'));
+    from = { x: lb.x + lb.w / 2, y: lb.y + lb.h / 2, h: lb.h };
+    const hb = box($('#hint'));
+    start = { x: hb.x + hb.w / 2, y: hb.y + hb.h / 2 };
+
+    const els = $$('[data-node]');
+    const ys = els.map(el => { if (el.matches('li')) { const b = box(el); return b.y + b.h / 2; }
+      // a corrente chega na cena (o painel parado, a câmara, o mapa), para dar tempo de ver o antes
+      const an = el.dataset.anchor && el.querySelector(el.dataset.anchor);
+      if (an) { const b = box(an); return b.y + (el.dataset.anchorOff ? +el.dataset.anchorOff : Math.min(b.h * .4, 120)); }
+      const b = box(el.querySelector('h2')); return b.y + Math.min(b.h, 60) * .5; });
+
+    pts = [start];
+    const drop = Math.min(Math.abs(start.x - X) * 1.6, ys[0] - start.y - a - 40);
+    pts.push({ x: X, y: start.y + Math.max(drop, 40) });
+    nodes = [];
+    els.forEach((el, i) => {
+      const y = ys[i];
+      if (el.hasAttribute('data-end')) {
+        const b = box(el.querySelector('.btn')), by = b.y + b.h / 2;
+        pts.push({ x: X, y: by - a }, { x: X - w, y: by }, { x: b.x, y: by });
+        nodes.push({ el, at: pts.length - 1 });
+        return;
+      }
+      pts.push({ x: X, y: y - a }, { x: X - w, y });
+      nodes.push({ el, at: pts.length - 1 });
+      pts.push({ x: X + w, y }, { x: X, y: y + a });
+    });
+
+    cum = [0];
+    for (let i = 1; i < pts.length; i++) cum[i] = cum[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+    total = cum[cum.length - 1];
+    nodes.forEach(n => { n.len = cum[n.at]; n.on = n.el.classList.contains('on'); });
+
+    const d = 'M' + pts.map(p => p.x.toFixed(1) + ' ' + p.y.toFixed(1)).join('L');
+    paths.forEach(p => p.setAttribute('d', d));
+    live.forEach(p => { p.style.strokeDasharray = total; });
+    draw(true);
+  }
+
+  function lenAtY(y) {
+    for (let i = 1; i < pts.length; i++) {
+      const p = pts[i - 1], q = pts[i];
+      if (q.y <= y) continue;
+      if (p.y >= y) return cum[i - 1];
+      return cum[i - 1] + (cum[i] - cum[i - 1]) * (y - p.y) / (q.y - p.y);
+    }
+    return total;
+  }
+  function ptAt(L) {
+    for (let i = 1; i < pts.length; i++) if (cum[i] >= L) {
+      const p = pts[i - 1], q = pts[i], k = (L - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1);
+      return { x: p.x + (q.x - p.x) * k, y: p.y + (q.y - p.y) * k };
+    }
+    return pts[pts.length - 1];
+  }
+
+  const lineY = s => s + innerHeight * .62 - (main.getBoundingClientRect().top + scrollY);
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  function spark(p) {
+    const pl = document.createElementNS(NS, 'polyline');
+    let x = p.x, y = p.y, ang = Math.random() * Math.PI * 2; const s = [x + ',' + y];
+    for (let k = 0; k < 3 + (Math.random() * 3 | 0); k++) {
+      ang += (Math.random() - .5) * 1.6; const r = 5 + Math.random() * 9;
+      x += Math.cos(ang) * r; y += Math.sin(ang) * r; s.push(x.toFixed(1) + ',' + y.toFixed(1));
+    }
+    pl.setAttribute('points', s.join(' ')); pl.setAttribute('class', 'spark');
+    fx.appendChild(pl); setTimeout(() => pl.remove(), 340);
+  }
+  function burst(p) {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', 34); c.setAttribute('class', 'pulse');
+    fx.appendChild(c); setTimeout(() => c.remove(), 720);
+  }
+
+  let cur = 0;
+  function draw(silent) {
+    const ly = lineY(sy);
+    cur = lenAtY(ly);
+    live.forEach(p => { p.style.strokeDashoffset = total - cur; });
+
+    // 0 → 1 enquanto o raio desce do logo até o começo do fio
+    const span = Math.max(1, start.y - lineY(0));
+    const k = Math.min(1, Math.max(0, (ly - lineY(0)) / span));
+    let x, y, h;
+    if (k < 1) { const e = ease(k); x = from.x + (start.x - from.x) * e; y = from.y + (start.y - from.y) * e; h = from.h + (runH - from.h) * e; }
+    else { const p = ptAt(cur); x = p.x; y = p.y; h = runH; }
+    const s = h / BOLT.h;
+    runner.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(4)}) translate(${-BOLT.cx} ${-BOLT.cy})`);
+    const detached = ready && k > .002;
+    hero.classList.toggle('detached', detached);
+    runner.style.opacity = !ready ? 0 : (cur >= total - 1 ? 0 : 1);
+
+    nodes.forEach(n => {
+      const on = cur >= n.len - .5;
+      if (on === n.on) return;
+      n.on = on; n.el.classList.toggle('on', on);
+      if (on && !silent && !reduce) burst(ptAt(n.len));
+      if (n.el.id === 's-problema' && !on) downtime = 0;
+    });
+    frostTick();
+    return { x, y, k };
+  }
+
+  function step(now) {
+    raf = 0;
+    const gap = scrollY - sy;
+    sy = Math.abs(gap) < .5 || reduce ? scrollY : sy + gap * .14;
+    const p = draw(false);
+    if (!reduce && p.k >= 1 && Math.abs(gap) > 3 && now - lastFx > 45) { lastFx = now; spark(p); if (Math.abs(gap) > 80) spark(p); }
+    if (sy !== scrollY) raf = requestAnimationFrame(step);
+  }
+  const wake = () => { if (ready && !raf) raf = requestAnimationFrame(step); };
+  addEventListener('scroll', wake, { passive: true });
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { build(); wake(); }, 120); });
+
+  // ---- cena 1: o relógio da parada e o produto em risco
+  let downtime = 0;
+  const secA = $('#s-problema'), clock = $('#clock'), risk = $('#risk');
+  setInterval(() => {
+    const on = secA.classList.contains('on');
+    if (!on) downtime++;
+    const mm = String(Math.floor(downtime / 60)).padStart(2, '0'), ss = String(downtime % 60).padStart(2, '0');
+    clock.textContent = (on ? 'RESTABELECIDA ' : 'PARADA ') + mm + ':' + ss;
+    if (!on) risk.style.width = Math.min(100, 12 + downtime * 4) + '%';
+  }, 1000);
+
+  // ---- cena 3: a temperatura sobe sem energia e volta com ela; o gelo toma a borda da tela
+  const secC = $('#s-frio'), temp = $('#temp'), tv = $('#tv'), ts = $('#ts'), frost = $('#frost');
+  let t = -9.4, seen = 0;
+  setInterval(() => {
+    const on = secC.classList.contains('on');
+    t += on ? (-18 - t) * .09 : (-4 - t) * .006;
+    tv.textContent = (t < 0 ? '−' : '') + Math.abs(t).toFixed(1).replace('.', ',');
+    const ok = t < -16.5;
+    temp.classList.toggle('ok', ok);
+    ts.textContent = ok ? 'ESTÁVEL · NO SETPOINT' : on ? 'RECUPERANDO' : 'ALARME · SUBINDO';
+  }, 90);
+  new IntersectionObserver(es => { seen = es[es.length - 1].intersectionRatio; frostTick(); },
+    { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }).observe(secC);
+  function frostTick() { frost.style.opacity = (seen * (secC.classList.contains('on') ? 1 : .35)).toFixed(3); }
+
+  // ---- cena 5: o globo. Os continentes são pontos (Natural Earth 110m, domínio público), desenhados em projeção
+  // ortográfica num canvas; os arcos saem de São Miguel do Oeste quando a corrente chega na seção.
+  const DOTS = [-540,-723,-540,-695,-524,-736,-524,-709,-508,-748,-508,-723,-508,-697,-492,-735,-492,-710,-492,-686,-476,-746,-476,-722,-476,-699,-476,-675,-460,-727,-460,-704,-460,-681,-460,1673,-460,1696,-444,-738,-444,-716,-444,-693,-444,-671,-444,1699,-428,-742,-428,-720,-428,-698,-428,-676,-428,-655,-428,1462,-428,1724,-412,-724,-412,-703,-412,-682,-412,-660,-412,1449,-412,1470,-412,1725,-396,-728,-396,-708,-396,-687,-396,-666,-396,-645,-396,-624,-396,1748,-396,1769,-380,-732,-380,-712,-380,-692,-380,-671,-380,-651,-380,-631,-380,-610,-380,-590,-380,1424,-380,1444,-380,1464,-380,1749,-380,1769,-364,-716,-364,-696,-364,-676,-364,-656,-364,-636,-364,-617,-364,-597,-364,-577,-364,1412,-364,1432,-364,1452,-364,1472,-364,1492,-348,-720,-348,-701,-348,-681,-348,-662,-348,-642,-348,-623,-348,-603,-348,-584,-348,1168,-348,1401,-348,1421,-348,1440,-348,1459,-348,1479,-348,1498,-348,1732,-332,-699,-332,-680,-332,-661,-332,-641,-332,-622,-332,-603,-332,-584,-332,-565,-332,-546,-332,201,-332,220,-332,239,-332,259,-332,1159,-332,1178,-332,1197,-332,1216,-332,1235,-332,1350,-332,1369,-332,1388,-332,1407,-332,1427,-332,1446,-332,1465,-332,1484,-332,1503,-316,-703,-316,-684,-316,-666,-316,-647,-316,-628,-316,-609,-316,-591,-316,-572,-316,-553,-316,-534,-316,-516,-316,197,-316,216,-316,234,-316,253,-316,272,-316,291,-316,1172,-316,1191,-316,1209,-316,1228,-316,1247,-316,1266,-316,1284,-316,1322,-316,1341,-316,1359,-316,1378,-316,1397,-316,1416,-316,1434,-316,1453,-316,1472,-316,1491,-316,1509,-316,1528,-300,-702,-300,-683,-300,-665,-300,-646,-300,-628,-300,-609,-300,-591,-300,-572,-300,-554,-300,-535,-300,-517,-300,185,-300,203,-300,222,-300,240,-300,258,-300,277,-300,295,-300,1163,-300,1182,-300,1200,-300,1218,-300,1237,-300,1255,-300,1274,-300,1292,-300,1311,-300,1329,-300,1348,-300,1366,-300,1385,-300,1403,-300,1422,-300,1440,-300,1458,-300,1477,-300,1495,-300,1514,-284,-700,-284,-682,-284,-664,-284,-645,-284,-627,-284,-609,-284,-591,-284,-573,-284,-555,-284,-536,-284,-518,-284,-500,-284,173,-284,191,-284,209,-284,227,-284,245,-284,264,-284,282,-284,300,-284,318,-284,1155,-284,1173,-284,1191,-284,1209,-284,1227,-284,1245,-284,1264,-284,1282,-284,1300,-284,1318,-284,1336,-284,1355,-284,1373,-284,1391,-284,1409,-284,1427,-284,1445,-284,1464,-284,1482,-284,1500,-284,1518,-268,-699,-268,-681,-268,-663,-268,-645,-268,-627,-268,-609,-268,-591,-268,-573,-268,-555,-268,-537,-268,-519,-268,-501,-268,161,-268,179,-268,197,-268,215,-268,233,-268,251,-268,269,-268,287,-268,304,-268,322,-268,1146,-268,1164,-268,1182,-268,1200,-268,1218,-268,1236,-268,1254,-268,1272,-268,1290,-268,1307,-268,1325,-268,1343,-268,1361,-268,1379,-268,1397,-268,1415,-268,1433,-268,1451,-268,1469,-268,1487,-268,1504,-268,1522,-252,-697,-252,-679,-252,-662,-252,-644,-252,-626,-252,-609,-252,-591,-252,-574,-252,-556,-252,-538,-252,-521,-252,-503,-252,-485,-252,150,-252,168,-252,185,-252,203,-252,221,-252,238,-252,256,-252,274,-252,291,-252,309,-252,326,-252,450,-252,1156,-252,1174,-252,1191,-252,1209,-252,1226,-252,1244,-252,1262,-252,1279,-252,1297,-252,1315,-252,1332,-252,1350,-252,1368,-252,1385,-252,1403,-252,1421,-252,1438,-252,1456,-252,1474,-252,1491,-252,1509,-252,1526,-236,-690,-236,-673,-236,-655,-236,-638,-236,-620,-236,-603,-236,-585,-236,-568,-236,-550,-236,-533,-236,-516,-236,-498,-236,-481,-236,-463,-236,149,-236,166,-236,183,-236,201,-236,218,-236,236,-236,253,-236,271,-236,288,-236,306,-236,323,-236,341,-236,446,-236,463,-236,1145,-236,1162,-236,1180,-236,1197,-236,1215,-236,1232,-236,1250,-236,1267,-236,1284,-236,1302,-236,1319,-236,1337,-236,1354,-236,1372,-236,1389,-236,1407,-236,1424,-236,1442,-236,1459,-236,1477,-236,1494,-220,-689,-220,-672,-220,-655,-220,-637,-220,-620,-220,-603,-220,-586,-220,-568,-220,-551,-220,-534,-220,-517,-220,-500,-220,-482,-220,-465,-220,-448,-220,-431,-220,-413,-220,155,-220,172,-220,189,-220,207,-220,224,-220,241,-220,258,-220,276,-220,293,-220,310,-220,327,-220,344,-220,448,-220,465,-220,1154,-220,1171,-220,1189,-220,1206,-220,1223,-220,1240,-220,1257,-220,1275,-220,1292,-220,1309,-220,1326,-220,1344,-220,1361,-220,1378,-220,1395,-220,1412,-220,1430,-220,1447,-220,1464,-220,1481,-204,-700,-204,-682,-204,-665,-204,-648,-204,-631,-204,-614,-204,-597,-204,-580,-204,-563,-204,-546,-204,-529,-204,-512,-204,-495,-204,-478,-204,-461,-204,-444,-204,-427,-204,-409,-204,136,-204,154,-204,171,-204,188,-204,205,-204,222,-204,239,-204,256,-204,273,-204,290,-204,307,-204,324,-204,341,-204,444,-204,461,-204,478,-204,1194,-204,1211,-204,1228,-204,1245,-204,1263,-204,1280,-204,1297,-204,1314,-204,1331,-204,1348,-204,1365,-204,1382,-204,1399,-204,1416,-204,1433,-204,1450,-204,1467,-204,1484,-188,-693,-188,-676,-188,-659,-188,-642,-188,-625,-188,-608,-188,-592,-188,-575,-188,-558,-188,-541,-188,-524,-188,-507,-188,-490,-188,-473,-188,-456,-188,-439,-188,-423,-188,-406,-188,135,-188,152,-188,169,-188,186,-188,203,-188,220,-188,237,-188,254,-188,270,-188,287,-188,304,-188,321,-188,338,-188,355,-188,456,-188,473,-188,490,-188,1217,-188,1234,-188,1251,-188,1268,-188,1285,-188,1301,-188,1318,-188,1335,-188,1352,-188,1369,-188,1386,-188,1403,-188,1420,-188,1437,-188,1454,-172,-703,-172,-687,-172,-670,-172,-653,-172,-636,-172,-620,-172,-603,-172,-586,-172,-569,-172,-553,-172,-536,-172,-519,-172,-502,-172,-486,-172,-469,-172,-452,-172,-435,-172,-419,-172,-402,-172,117,-172,134,-172,151,-172,167,-172,184,-172,201,-172,218,-172,234,-172,251,-172,268,-172,285,-172,301,-172,318,-172,335,-172,352,-172,368,-172,452,-172,469,-172,486,-172,1239,-172,1256,-172,1273,-172,1289,-172,1306,-172,1323,-172,1340,-172,1356,-172,1373,-172,1390,-172,1423,-172,1440,-172,1457,-156,-747,-156,-730,-156,-713,-156,-697,-156,-680,-156,-664,-156,-647,-156,-630,-156,-614,-156,-597,-156,-581,-156,-564,-156,-547,-156,-531,-156,-514,-156,-498,-156,-481,-156,-465,-156,-448,-156,-431,-156,-415,-156,-398,-156,133,-156,149,-156,166,-156,182,-156,199,-156,216,-156,232,-156,249,-156,265,-156,282,-156,299,-156,315,-156,332,-156,348,-156,365,-156,382,-156,398,-156,481,-156,1244,-156,1261,-156,1277,-156,1294,-156,1311,-156,1327,-156,1344,-156,1360,-156,1427,-156,1443,-140,-751,-140,-735,-140,-718,-140,-702,-140,-685,-140,-669,-140,-652,-140,-636,-140,-619,-140,-603,-140,-586,-140,-570,-140,-553,-140,-537,-140,-520,-140,-504,-140,-487,-140,-471,-140,-454,-140,-438,-140,-421,-140,-405,-140,124,-140,140,-140,157,-140,173,-140,190,-140,206,-140,223,-140,239,-140,256,-140,272,-140,289,-140,306,-140,322,-140,339,-140,355,-140,372,-140,388,-140,405,-140,487,-140,1313,-140,1329,-140,1346,-140,1428,-124,-761,-124,-745,-124,-728,-124,-712,-124,-695,-124,-679,-124,-663,-124,-646,-124,-630,-124,-614,-124,-597,-124,-581,-124,-565,-124,-548,-124,-532,-124,-515,-124,-499,-124,-483,-124,-466,-124,-450,-124,-434,-124,-417,-124,-401,-124,-385,-124,139,-124,155,-124,172,-124,188,-124,205,-124,221,-124,237,-124,254,-124,270,-124,286,-124,303,-124,319,-124,335,-124,352,-124,368,-124,385,-124,401,-124,1317,-124,1334,-124,1350,-124,1366,-124,1432,-108,-766,-108,-749,-108,-733,-108,-717,-108,-700,-108,-684,-108,-668,-108,-652,-108,-635,-108,-619,-108,-603,-108,-586,-108,-570,-108,-554,-108,-538,-108,-521,-108,-505,-108,-489,-108,-472,-108,-456,-108,-440,-108,-424,-108,-407,-108,-391,-108,-375,-108,147,-108,163,-108,179,-108,195,-108,212,-108,228,-108,244,-108,261,-108,277,-108,293,-108,310,-108,326,-108,342,-108,358,-108,375,-108,391,-92,-786,-92,-770,-92,-754,-92,-738,-92,-722,-92,-705,-92,-689,-92,-673,-92,-657,-92,-641,-92,-624,-92,-608,-92,-592,-92,-576,-92,-559,-92,-543,-92,-527,-92,-511,-92,-495,-92,-478,-92,-462,-92,-446,-92,-430,-92,-414,-92,-397,-92,-381,-92,-365,-92,138,-92,154,-92,170,-92,186,-92,203,-92,219,-92,235,-92,251,-92,268,-92,284,-92,300,-92,316,-92,332,-92,349,-92,365,-92,381,-92,1484,-76,-791,-76,-775,-76,-759,-76,-743,-76,-726,-76,-710,-76,-694,-76,-678,-76,-662,-76,-646,-76,-630,-76,-613,-76,-597,-76,-581,-76,-565,-76,-549,-76,-533,-76,-517,-76,-500,-76,-484,-76,-468,-76,-452,-76,-436,-76,-420,-76,-404,-76,-387,-76,-371,-76,-355,-76,145,-76,161,-76,178,-76,194,-76,210,-76,226,-76,242,-76,258,-76,274,-76,291,-76,307,-76,323,-76,339,-76,355,-76,371,-76,387,-76,1082,-76,1098,-76,1114,-76,1130,-76,1388,-76,1404,-76,1421,-76,1437,-76,1453,-76,1469,-60,-796,-60,-779,-60,-763,-60,-747,-60,-731,-60,-715,-60,-699,-60,-683,-60,-667,-60,-651,-60,-635,-60,-619,-60,-603,-60,-587,-60,-571,-60,-554,-60,-538,-60,-522,-60,-506,-60,-490,-60,-474,-60,-458,-60,-442,-60,-426,-60,-410,-60,-394,-60,-378,-60,-362,-60,137,-60,153,-60,169,-60,185,-60,201,-60,217,-60,233,-60,249,-60,265,-60,281,-60,297,-60,313,-60,329,-60,346,-60,362,-60,378,-60,1069,-60,1342,-60,1390,-60,1406,-60,1422,-60,1438,-60,1454,-60,1471,-60,1503,-60,1551,-44,-812,-44,-796,-44,-779,-44,-763,-44,-747,-44,-731,-44,-715,-44,-699,-44,-683,-44,-667,-44,-651,-44,-635,-44,-619,-44,-603,-44,-587,-44,-571,-44,-554,-44,-538,-44,-522,-44,-506,-44,-490,-44,-474,-44,-458,-44,-442,-44,-426,-44,-410,-44,-394,-44,-378,-44,121,-44,137,-44,153,-44,169,-44,185,-44,201,-44,217,-44,233,-44,249,-44,265,-44,281,-44,297,-44,313,-44,329,-44,346,-44,362,-44,378,-44,394,-44,1037,-44,1053,-44,1197,-44,1229,-44,1358,-44,1374,-44,1390,-44,1406,-44,1422,-44,1438,-44,1519,-28,-784,-28,-768,-28,-752,-28,-736,-28,-720,-28,-704,-28,-688,-28,-672,-28,-656,-28,-640,-28,-624,-28,-608,-28,-592,-28,-576,-28,-560,-28,-544,-28,-528,-28,-512,-28,-496,-28,-480,-28,-464,-28,-448,-28,-432,-28,112,-28,128,-28,144,-28,160,-28,176,-28,192,-28,208,-28,224,-28,240,-28,256,-28,272,-28,288,-28,304,-28,320,-28,336,-28,352,-28,368,-28,384,-28,400,-28,1024,-28,1040,-28,1056,-28,1104,-28,1120,-28,1136,-28,1152,-28,1200,-28,1216,-28,1328,-28,1344,-28,1360,-28,1376,-28,1392,-28,1408,-12,-800,-12,-784,-12,-768,-12,-752,-12,-736,-12,-720,-12,-704,-12,-688,-12,-672,-12,-656,-12,-640,-12,-624,-12,-608,-12,-592,-12,-576,-12,-560,-12,-544,-12,-528,-12,-512,-12,-496,-12,-480,-12,-464,-12,96,-12,112,-12,128,-12,144,-12,160,-12,176,-12,192,-12,208,-12,224,-12,240,-12,256,-12,272,-12,288,-12,304,-12,320,-12,336,-12,352,-12,368,-12,384,-12,400,-12,416,-12,1008,-12,1024,-12,1040,-12,1104,-12,1120,-12,1136,-12,1152,-12,1168,-12,1200,-12,1216,-12,1312,-12,1328,4,-800,4,-784,4,-768,4,-752,4,-736,4,-720,4,-704,4,-688,4,-672,4,-656,4,-640,4,-624,4,-608,4,-592,4,-576,4,-560,4,-544,4,-528,4,-512,4,96,4,112,4,128,4,144,4,160,4,176,4,192,4,208,4,224,4,240,4,256,4,272,4,288,4,304,4,320,4,336,4,352,4,368,4,384,4,400,4,416,4,432,4,992,4,1008,4,1024,4,1104,4,1120,4,1136,4,1152,4,1168,4,1200,4,1216,4,1232,4,1280,20,-784,20,-768,20,-752,20,-736,20,-720,20,-704,20,-688,20,-672,20,-656,20,-640,20,-624,20,-608,20,-592,20,-576,20,-560,20,-544,20,-528,20,-512,20,96,20,112,20,128,20,144,20,160,20,176,20,192,20,208,20,224,20,240,20,256,20,272,20,288,20,304,20,320,20,336,20,352,20,368,20,384,20,400,20,416,20,432,20,448,20,992,20,1008,20,1040,20,1120,20,1136,20,1152,20,1168,36,-768,36,-752,36,-736,36,-720,36,-704,36,-688,36,-672,36,-656,36,-640,36,-624,36,-608,36,-592,36,-576,36,-560,36,-544,36,-528,36,-512,36,96,36,112,36,128,36,144,36,160,36,176,36,192,36,208,36,224,36,240,36,256,36,272,36,288,36,304,36,320,36,336,36,352,36,368,36,384,36,400,36,416,36,432,36,448,36,464,36,976,36,1024,36,1136,36,1152,36,1168,52,-763,52,-747,52,-731,52,-715,52,-699,52,-683,52,-667,52,-651,52,-635,52,-619,52,-603,52,-587,52,-571,52,-554,52,-538,52,-88,52,-72,52,-56,52,-40,52,-24,52,-8,52,56,52,72,52,88,52,104,52,121,52,137,52,153,52,169,52,185,52,201,52,217,52,233,52,249,52,265,52,281,52,297,52,313,52,329,52,346,52,362,52,378,52,394,52,410,52,426,52,442,52,458,52,474,52,956,52,972,52,1004,52,1021,52,1165,52,1181,68,-775,68,-759,68,-743,68,-726,68,-710,68,-694,68,-678,68,-662,68,-646,68,-630,68,-613,68,-597,68,-581,68,-113,68,-97,68,-81,68,-65,68,-48,68,-32,68,-16,68,0,68,16,68,32,68,48,68,65,68,81,68,97,68,113,68,129,68,145,68,161,68,178,68,194,68,210,68,226,68,242,68,258,68,274,68,291,68,307,68,323,68,339,68,355,68,371,68,387,68,404,68,420,68,436,68,452,68,468,68,484,68,807,68,1001,68,1243,84,-823,84,-807,84,-775,84,-759,84,-743,84,-726,84,-710,84,-694,84,-678,84,-662,84,-646,84,-630,84,-613,84,-129,84,-113,84,-97,84,-81,84,-65,84,-48,84,-32,84,-16,84,0,84,16,84,32,84,48,84,65,84,81,84,97,84,113,84,129,84,145,84,161,84,178,84,194,84,210,84,226,84,242,84,258,84,274,84,291,84,307,84,323,84,339,84,355,84,371,84,387,84,404,84,420,84,436,84,452,84,468,84,484,84,500,84,775,84,807,84,985,84,1001,84,1243,84,1259,100,-851,100,-835,100,-754,100,-738,100,-722,100,-705,100,-689,100,-673,100,-657,100,-641,100,-624,100,-138,100,-122,100,-105,100,-89,100,-73,100,-57,100,-41,100,-24,100,-8,100,8,100,24,100,41,100,57,100,73,100,89,100,105,100,122,100,138,100,154,100,170,100,186,100,203,100,219,100,235,100,251,100,268,100,284,100,300,100,316,100,332,100,349,100,365,100,381,100,397,100,414,100,430,100,446,100,462,100,478,100,495,100,770,100,786,100,1062,116,-859,116,-843,116,-728,116,-155,116,-139,116,-123,116,-106,116,-90,116,-74,116,-57,116,-41,116,-25,116,-8,116,8,116,25,116,41,116,57,116,74,116,90,116,106,116,123,116,139,116,155,116,172,116,188,116,205,116,221,116,237,116,254,116,270,116,286,116,303,116,319,116,335,116,352,116,368,116,385,116,401,116,417,116,499,116,761,116,777,116,794,116,990,116,1039,116,1055,116,1072,116,1088,116,1252,132,-871,132,-855,132,-838,132,-164,132,-148,132,-132,132,-115,132,-99,132,-82,132,-66,132,-49,132,-33,132,-16,132,0,132,16,132,33,132,49,132,66,132,82,132,99,132,115,132,132,132,148,132,164,132,181,132,197,132,214,132,230,132,247,132,263,132,279,132,296,132,312,132,329,132,345,132,362,132,378,132,395,132,411,132,444,132,756,132,773,132,789,132,986,132,1019,132,1036,132,1052,132,1068,132,1085,132,1233,148,-917,148,-900,148,-883,148,-867,148,-850,148,-834,148,-173,148,-157,148,-140,148,-124,148,-107,148,-91,148,-74,148,-58,148,-41,148,-25,148,-8,148,8,148,25,148,41,148,58,148,74,148,91,148,107,148,124,148,140,148,157,148,173,148,190,148,206,148,223,148,239,148,256,148,272,148,289,148,306,148,322,148,339,148,355,148,372,148,388,148,405,148,438,148,454,148,471,148,487,148,751,148,768,148,784,148,983,148,999,148,1016,148,1032,148,1049,148,1065,148,1082,148,1214,164,-975,164,-958,164,-942,164,-925,164,-908,164,-892,164,-158,164,-142,164,-125,164,-108,164,-92,164,-75,164,-58,164,-42,164,-25,164,-8,164,8,164,25,164,42,164,58,164,75,164,92,164,108,164,125,164,142,164,158,164,175,164,192,164,208,164,225,164,242,164,258,164,275,164,292,164,308,164,325,164,342,164,358,164,375,164,442,164,458,164,475,164,492,164,508,164,742,164,758,164,775,164,792,164,808,164,958,164,975,164,992,164,1008,164,1025,164,1042,164,1058,164,1075,164,1208,180,-1018,180,-1001,180,-984,180,-967,180,-950,180,-934,180,-917,180,-900,180,-883,180,-765,180,-715,180,-664,180,-160,180,-143,180,-126,180,-109,180,-93,180,-76,180,-59,180,-42,180,-25,180,-8,180,8,180,25,180,42,180,59,180,76,180,93,180,109,180,126,180,143,180,160,180,177,180,193,180,210,180,227,180,244,180,261,180,278,180,294,180,311,180,328,180,345,180,362,180,379,180,429,180,446,180,463,180,479,180,496,180,513,180,530,180,547,180,564,180,732,180,749,180,765,180,782,180,799,180,816,180,833,180,950,180,967,180,984,180,1001,180,1018,180,1035,180,1051,180,1220,196,-1554,196,-1044,196,-1027,196,-1010,196,-993,196,-976,196,-892,196,-722,196,-705,196,-161,196,-144,196,-127,196,-110,196,-93,196,-76,196,-59,196,-42,196,-25,196,-8,196,8,196,25,196,42,196,59,196,76,196,93,196,110,196,127,196,144,196,161,196,178,196,195,196,212,196,229,196,246,196,263,196,280,196,297,196,314,196,331,196,348,196,365,196,416,196,433,196,450,196,467,196,484,196,501,196,518,196,535,196,552,196,569,196,739,196,756,196,773,196,790,196,807,196,824,196,841,196,942,196,959,196,976,196,993,196,1010,196,1027,196,1044,196,1095,212,-1037,212,-1020,212,-1003,212,-986,212,-883,212,-780,212,-763,212,-163,212,-146,212,-129,212,-111,212,-94,212,-77,212,-60,212,-43,212,-26,212,-9,212,9,212,26,212,43,212,60,212,77,212,94,212,111,212,129,212,146,212,163,212,180,212,197,212,214,212,231,212,249,212,266,212,283,212,300,212,317,212,334,212,351,212,369,212,403,212,420,212,437,212,454,212,471,212,489,212,506,212,523,212,540,212,557,212,574,212,711,212,729,212,746,212,763,212,780,212,797,212,814,212,831,212,849,212,866,212,934,212,951,212,969,212,986,212,1003,212,1020,212,1037,212,1054,212,1071,212,1106,228,-1043,228,-1026,228,-1009,228,-991,228,-835,228,-817,228,-800,228,-157,228,-139,228,-122,228,-104,228,-87,228,-70,228,-52,228,-35,228,-17,228,0,228,17,228,35,228,52,228,70,228,87,228,104,228,122,228,139,228,157,228,174,228,191,228,209,228,226,228,243,228,261,228,278,228,296,228,313,228,330,228,348,228,400,228,417,228,435,228,452,228,470,228,487,228,504,228,522,228,539,228,557,228,574,228,591,228,696,228,713,228,730,228,748,228,765,228,783,228,800,228,817,228,835,228,852,228,870,228,887,228,904,228,922,228,939,228,957,228,974,228,991,228,1009,228,1026,228,1043,228,1061,228,1078,228,1096,228,1113,228,1130,228,1148,244,-1071,244,-1054,244,-1036,244,-1019,244,-1001,244,-983,244,-140,244,-123,244,-105,244,-88,244,-70,244,-53,244,-35,244,-18,244,0,244,18,244,35,244,53,244,70,244,88,244,105,244,123,244,140,244,158,244,176,244,193,244,211,244,228,244,246,244,263,244,281,244,299,244,316,244,334,244,351,244,386,244,404,244,421,244,439,244,457,244,474,244,492,244,509,244,544,244,562,244,685,244,702,244,720,244,738,244,755,244,773,244,790,244,808,244,825,244,843,244,860,244,878,244,896,244,913,244,931,244,948,244,966,244,983,244,1001,244,1019,244,1036,244,1054,244,1071,244,1089,244,1106,244,1124,244,1141,244,1159,244,1177,244,1212,260,-1114,260,-1078,260,-1060,260,-1043,260,-1025,260,-1007,260,-989,260,-811,260,-134,260,-116,260,-98,260,-80,260,-62,260,-45,260,-27,260,-9,260,9,260,27,260,45,260,62,260,80,260,98,260,116,260,134,260,151,260,169,260,187,260,205,260,223,260,241,260,258,260,276,260,294,260,312,260,330,260,383,260,401,260,419,260,437,260,454,260,472,260,490,260,561,260,579,260,597,260,615,260,633,260,650,260,668,260,686,260,704,260,722,260,740,260,757,260,775,260,793,260,811,260,829,260,847,260,864,260,882,260,900,260,918,260,936,260,953,260,971,260,989,260,1007,260,1025,260,1043,260,1060,260,1078,260,1096,260,1114,260,1132,260,1150,260,1167,260,1185,276,-1140,276,-1104,276,-1085,276,-1067,276,-1049,276,-1031,276,-1013,276,-995,276,-977,276,-814,276,-127,276,-109,276,-90,276,-72,276,-54,276,-36,276,-18,276,0,276,18,276,36,276,54,276,72,276,90,276,109,276,127,276,145,276,163,276,181,276,199,276,217,276,235,276,253,276,271,276,289,276,308,276,326,276,362,276,380,276,398,276,416,276,434,276,452,276,470,276,488,276,525,276,543,276,561,276,579,276,597,276,615,276,633,276,651,276,669,276,687,276,706,276,724,276,742,276,760,276,778,276,796,276,814,276,832,276,850,276,868,276,886,276,905,276,923,276,941,276,959,276,977,276,995,276,1013,276,1031,276,1049,276,1067,276,1085,276,1104,276,1122,276,1140,276,1158,276,1176,276,1194,292,-1148,292,-1111,292,-1093,292,-1074,292,-1056,292,-1038,292,-1019,292,-1001,292,-983,292,-964,292,-909,292,-817,292,-101,292,-83,292,-64,292,-46,292,-28,292,-9,292,9,292,28,292,46,292,64,292,83,292,101,292,119,292,138,292,156,292,174,292,193,292,211,292,230,292,248,292,266,292,285,292,303,292,321,292,340,292,358,292,377,292,395,292,413,292,432,292,450,292,468,292,523,292,542,292,560,292,579,292,597,292,615,292,634,292,652,292,670,292,689,292,707,292,726,292,744,292,762,292,781,292,799,292,817,292,836,292,854,292,872,292,891,292,909,292,928,292,946,292,964,292,983,292,1001,292,1019,292,1038,292,1056,292,1074,292,1093,292,1111,292,1130,292,1148,292,1166,292,1185,292,1203,308,-1156,308,-1119,308,-1101,308,-1082,308,-1063,308,-1045,308,-1026,308,-1007,308,-989,308,-970,308,-951,308,-933,308,-914,308,-895,308,-877,308,-858,308,-839,308,-821,308,-93,308,-75,308,-56,308,-37,308,-19,308,0,308,19,308,37,308,56,308,75,308,93,308,112,308,131,308,149,308,168,308,205,308,224,308,242,308,261,308,280,308,298,308,317,308,336,308,354,308,373,308,392,308,410,308,429,308,448,308,466,308,485,308,504,308,522,308,541,308,560,308,578,308,597,308,616,308,634,308,653,308,672,308,690,308,709,308,727,308,746,308,765,308,783,308,802,308,821,308,839,308,858,308,877,308,895,308,914,308,933,308,951,308,970,308,989,308,1007,308,1026,308,1045,308,1063,308,1082,308,1101,308,1119,308,1138,308,1156,308,1175,308,1194,308,1212,324,-1165,324,-1146,324,-1127,324,-1108,324,-1089,324,-1071,324,-1052,324,-1033,324,-1014,324,-995,324,-976,324,-957,324,-938,324,-919,324,-900,324,-881,324,-862,324,-843,324,-824,324,-805,324,-85,324,-66,324,-47,324,-28,324,-9,324,9,324,28,324,47,324,66,324,85,324,104,324,123,324,142,324,218,324,351,324,369,324,388,324,407,324,426,324,445,324,464,324,483,324,502,324,521,324,540,324,559,324,578,324,597,324,616,324,635,324,654,324,673,324,692,324,711,324,729,324,748,324,767,324,786,324,805,324,824,324,843,324,862,324,881,324,900,324,919,324,938,324,957,324,976,324,995,324,1014,324,1033,324,1052,324,1071,324,1089,324,1108,324,1127,324,1146,324,1165,324,1184,324,1203,324,1317,340,-1174,340,-1155,340,-1136,340,-1117,340,-1097,340,-1078,340,-1059,340,-1040,340,-1020,340,-1001,340,-982,340,-963,340,-943,340,-924,340,-905,340,-886,340,-866,340,-847,340,-828,340,-809,340,-789,340,-58,340,-39,340,-19,340,0,340,19,340,39,340,58,340,77,340,96,340,366,340,385,340,404,340,424,340,443,340,462,340,481,340,501,340,520,340,539,340,558,340,578,340,597,340,616,340,635,340,655,340,674,340,693,340,712,340,732,340,751,340,770,340,789,340,809,340,828,340,847,340,866,340,886,340,905,340,924,340,943,340,963,340,982,340,1001,340,1020,340,1040,340,1059,340,1078,340,1097,340,1117,340,1136,340,1155,340,1174,340,1194,340,1309,356,-1200,356,-1180,356,-1161,356,-1141,356,-1121,356,-1102,356,-1082,356,-1062,356,-1043,356,-1023,356,-1003,356,-984,356,-964,356,-944,356,-925,356,-905,356,-885,356,-866,356,-846,356,-826,356,-807,356,-787,356,-767,356,-59,356,0,356,20,356,39,356,59,356,79,356,98,356,374,356,393,356,413,356,433,356,452,356,472,356,492,356,511,356,531,356,551,356,570,356,590,356,610,356,630,356,649,356,669,356,689,356,708,356,728,356,748,356,767,356,787,356,807,356,826,356,846,356,866,356,885,356,905,356,925,356,944,356,964,356,984,356,1003,356,1023,356,1043,356,1062,356,1082,356,1102,356,1121,356,1141,356,1161,356,1180,356,1279,356,1338,356,1357,356,1377,356,1397,372,-1207,372,-1187,372,-1166,372,-1146,372,-1126,372,-1106,372,-1086,372,-1066,372,-1046,372,-1026,372,-1006,372,-985,372,-965,372,-945,372,-925,372,-905,372,-885,372,-865,372,-845,372,-825,372,-804,372,-784,372,-764,372,-80,372,-60,372,-40,372,-20,372,101,372,141,372,221,372,282,372,302,372,322,372,342,372,362,372,382,372,402,372,422,372,442,372,463,372,483,372,503,372,543,372,563,372,583,372,603,372,623,372,644,372,664,372,684,372,704,372,724,372,744,372,764,372,784,372,804,372,825,372,845,372,865,372,885,372,905,372,925,372,945,372,965,372,985,372,1006,372,1026,372,1046,372,1066,372,1086,372,1106,372,1126,372,1146,372,1166,372,1187,372,1207,372,1267,372,1287,372,1368,372,1388,372,1408,388,-1234,388,-1214,388,-1193,388,-1173,388,-1152,388,-1131,388,-1111,388,-1090,388,-1070,388,-1049,388,-1029,388,-1008,388,-987,388,-967,388,-946,388,-926,388,-905,388,-885,388,-864,388,-843,388,-823,388,-802,388,-782,388,-761,388,-82,388,-62,388,-41,388,-21,388,0,388,165,388,226,388,267,388,288,388,309,388,329,388,350,388,370,388,391,388,411,388,432,388,453,388,473,388,555,388,576,388,597,388,617,388,638,388,658,388,679,388,699,388,720,388,741,388,761,388,782,388,802,388,823,388,843,388,864,388,885,388,905,388,926,388,946,388,967,388,987,388,1008,388,1029,388,1049,388,1070,388,1090,388,1111,388,1131,388,1152,388,1173,388,1255,388,1275,388,1399,404,-1242,404,-1221,404,-1200,404,-1179,404,-1158,404,-1137,404,-1116,404,-1095,404,-1074,404,-1053,404,-1032,404,-1011,404,-989,404,-968,404,-947,404,-926,404,-905,404,-884,404,-863,404,-842,404,-821,404,-800,404,-779,404,-758,404,-84,404,-63,404,-42,404,-21,404,0,404,84,404,211,404,232,404,274,404,295,404,316,404,337,404,358,404,379,404,400,404,421,404,442,404,463,404,484,404,547,404,568,404,589,404,611,404,632,404,653,404,674,404,695,404,716,404,737,404,758,404,779,404,800,404,821,404,842,404,863,404,884,404,905,404,926,404,947,404,968,404,989,404,1011,404,1032,404,1053,404,1074,404,1095,404,1116,404,1137,404,1158,404,1179,404,1200,404,1242,404,1263,404,1284,404,1411,420,-1229,420,-1207,420,-1186,420,-1164,420,-1143,420,-1121,420,-1099,420,-1078,420,-1056,420,-1035,420,-1013,420,-992,420,-970,420,-949,420,-927,420,-905,420,-884,420,-862,420,-841,420,-819,420,-798,420,-776,420,-754,420,-733,420,-711,420,-86,420,-65,420,-43,420,-22,420,0,420,22,420,129,420,194,420,216,420,237,420,259,420,345,420,431,420,453,420,474,420,539,420,560,420,582,420,604,420,625,420,647,420,668,420,690,420,711,420,733,420,754,420,776,420,798,420,819,420,841,420,862,420,884,420,905,420,927,420,949,420,970,420,992,420,1013,420,1035,420,1056,420,1078,420,1099,420,1121,420,1143,420,1164,420,1186,420,1207,420,1229,420,1250,420,1272,420,1293,420,1401,436,-1237,436,-1215,436,-1193,436,-1171,436,-1148,436,-1126,436,-1104,436,-1082,436,-1060,436,-1038,436,-1016,436,-994,436,-972,436,-950,436,-928,436,-906,436,-883,436,-861,436,-839,436,-817,436,-795,436,-773,436,-751,436,-729,436,-707,436,0,436,22,436,44,436,66,436,110,436,133,436,177,436,199,436,221,436,243,436,265,436,398,436,420,436,442,436,464,436,530,436,552,436,574,436,596,436,618,436,640,436,663,436,685,436,707,436,729,436,751,436,773,436,795,436,817,436,839,436,861,436,883,436,906,436,928,436,950,436,972,436,994,436,1016,436,1038,436,1060,436,1082,436,1104,436,1126,436,1148,436,1171,436,1193,436,1215,436,1237,436,1259,436,1281,436,1303,436,1325,436,1347,436,1436,452,-1223,452,-1200,452,-1177,452,-1155,452,-1132,452,-1109,452,-1087,452,-1064,452,-1042,452,-1019,452,-996,452,-974,452,-951,452,-928,452,-906,452,-883,452,-860,452,-838,452,-815,452,-792,452,-770,452,-747,452,-725,452,-702,452,-679,452,-634,452,0,452,23,452,45,452,68,452,91,452,113,452,158,452,181,452,204,452,226,452,249,452,272,452,294,452,340,452,362,452,385,452,408,452,430,452,453,452,521,452,543,452,566,452,589,452,611,452,634,452,657,452,679,452,702,452,725,452,747,452,770,452,792,452,815,452,838,452,860,452,883,452,906,452,928,452,951,452,974,452,996,452,1019,452,1042,452,1064,452,1087,452,1109,452,1132,452,1155,452,1177,452,1200,452,1223,452,1245,452,1268,452,1291,452,1313,452,1336,452,1358,468,-1227,468,-1204,468,-1181,468,-1157,468,-1134,468,-1110,468,-1087,468,-1064,468,-1040,468,-1017,468,-994,468,-970,468,-947,468,-923,468,-900,468,-877,468,-853,468,-830,468,-806,468,-783,468,-760,468,-736,468,-713,468,-690,468,-666,468,-643,468,-12,468,12,468,35,468,58,468,82,468,105,468,129,468,152,468,175,468,199,468,222,468,245,468,269,468,292,468,316,468,339,468,362,468,386,468,409,468,432,468,456,468,479,468,503,468,549,468,573,468,596,468,619,468,643,468,666,468,690,468,713,468,736,468,760,468,783,468,806,468,830,468,853,468,877,468,900,468,923,468,947,468,970,468,994,468,1017,468,1040,468,1064,468,1087,468,1110,468,1134,468,1157,468,1181,468,1204,468,1227,468,1251,468,1274,468,1297,468,1321,468,1344,468,1368,484,-1208,484,-1184,484,-1160,484,-1136,484,-1111,484,-1087,484,-1063,484,-1039,484,-1015,484,-991,484,-966,484,-942,484,-918,484,-894,484,-870,484,-846,484,-821,484,-797,484,-773,484,-749,484,-725,484,-701,484,-677,484,-652,484,-580,484,-556,484,-532,484,-24,484,0,484,24,484,48,484,72,484,97,484,121,484,145,484,169,484,193,484,217,484,242,484,266,484,290,484,314,484,338,484,362,484,387,484,411,484,435,484,459,484,483,484,507,484,532,484,556,484,580,484,604,484,628,484,652,484,677,484,701,484,725,484,749,484,773,484,797,484,821,484,846,484,870,484,894,484,918,484,942,484,966,484,991,484,1015,484,1039,484,1063,484,1087,484,1111,484,1136,484,1160,484,1184,484,1208,484,1232,484,1256,484,1281,484,1305,484,1329,484,1353,484,1377,484,1426,500,-1266,500,-1241,500,-1217,500,-1192,500,-1167,500,-1142,500,-1117,500,-1092,500,-1068,500,-1043,500,-1018,500,-993,500,-968,500,-943,500,-919,500,-894,500,-869,500,-844,500,-819,500,-794,500,-770,500,-745,500,-720,500,-695,500,-670,500,-571,500,25,500,50,500,74,500,99,500,124,500,149,500,174,500,199,500,223,500,248,500,273,500,298,500,323,500,348,500,372,500,397,500,422,500,447,500,472,500,497,500,521,500,546,500,571,500,596,500,621,500,646,500,670,500,695,500,720,500,745,500,770,500,794,500,819,500,844,500,869,500,894,500,919,500,943,500,968,500,993,500,1018,500,1043,500,1068,500,1092,500,1117,500,1142,500,1167,500,1192,500,1217,500,1241,500,1266,500,1291,500,1316,500,1341,500,1366,500,1390,500,1440,516,-1273,516,-1247,516,-1221,516,-1196,516,-1170,516,-1144,516,-1119,516,-1093,516,-1067,516,-1041,516,-1016,516,-990,516,-964,516,-939,516,-913,516,-887,516,-861,516,-836,516,-810,516,-784,516,-759,516,-733,516,-707,516,-681,516,-656,516,-630,516,-604,516,-579,516,-39,516,-13,516,39,516,64,516,90,516,116,516,141,516,167,516,193,516,219,516,244,516,270,516,296,516,321,516,347,516,373,516,399,516,424,516,450,516,476,516,501,516,527,516,553,516,579,516,604,516,630,516,656,516,681,516,707,516,733,516,759,516,784,516,810,516,836,516,861,516,887,516,913,516,939,516,964,516,990,516,1016,516,1041,516,1067,516,1093,516,1119,516,1144,516,1170,516,1196,516,1221,516,1247,516,1273,516,1299,516,1324,516,1350,516,1376,516,1401,516,1427,532,-1280,532,-1253,532,-1227,532,-1200,532,-1173,532,-1147,532,-1120,532,-1093,532,-1067,532,-1040,532,-1013,532,-987,532,-960,532,-933,532,-907,532,-880,532,-853,532,-827,532,-773,532,-747,532,-720,532,-693,532,-667,532,-640,532,-613,532,-587,532,-560,532,-80,532,-27,532,0,532,53,532,80,532,107,532,133,532,160,532,187,532,213,532,240,532,267,532,293,532,320,532,347,532,373,532,400,532,427,532,453,532,480,532,507,532,533,532,560,532,587,532,613,532,640,532,667,532,693,532,720,532,747,532,773,532,800,532,827,532,853,532,880,532,907,532,933,532,960,532,987,532,1013,532,1040,532,1067,532,1093,532,1120,532,1147,532,1173,532,1200,532,1227,532,1253,532,1280,532,1307,532,1333,532,1360,532,1387,532,1573,532,1600,548,-1288,548,-1260,548,-1232,548,-1205,548,-1177,548,-1149,548,-1122,548,-1094,548,-1066,548,-1038,548,-1011,548,-983,548,-955,548,-928,548,-900,548,-872,548,-845,548,-789,548,-762,548,-734,548,-706,548,-678,548,-651,548,-623,548,-595,548,-69,548,-42,548,-14,548,97,548,208,548,235,548,263,548,291,548,318,548,346,548,374,548,402,548,429,548,457,548,485,548,512,548,540,548,568,548,595,548,623,548,651,548,678,548,706,548,734,548,762,548,789,548,817,548,845,548,872,548,900,548,928,548,955,548,983,548,1011,548,1038,548,1066,548,1094,548,1122,548,1149,548,1177,548,1205,548,1232,548,1260,548,1288,548,1315,548,1343,548,1565,548,1592,564,-1584,564,-1296,564,-1267,564,-1238,564,-1210,564,-1181,564,-1152,564,-1123,564,-1094,564,-1066,564,-1037,564,-1008,564,-979,564,-950,564,-922,564,-893,564,-749,564,-720,564,-691,564,-662,564,-634,564,-58,564,-29,564,86,564,144,564,230,564,259,564,288,564,317,564,346,564,374,564,403,564,432,564,461,564,490,564,518,564,547,564,576,564,605,564,634,564,662,564,691,564,720,564,749,564,778,564,806,564,835,564,864,564,893,564,922,564,950,564,979,564,1008,564,1037,564,1066,564,1094,564,1123,564,1152,564,1181,564,1210,564,1238,564,1267,564,1296,564,1325,564,1354,564,1584,564,1613,580,-1573,580,-1331,580,-1301,580,-1271,580,-1240,580,-1210,580,-1180,580,-1150,580,-1119,580,-1089,580,-1059,580,-1029,580,-998,580,-968,580,-938,580,-756,580,-726,580,-696,580,-666,580,-635,580,121,580,151,580,272,580,303,580,333,580,363,580,393,580,424,580,454,580,484,580,514,580,545,580,575,580,605,580,635,580,666,580,696,580,726,580,756,580,787,580,817,580,847,580,877,580,908,580,938,580,968,580,998,580,1029,580,1059,580,1089,580,1119,580,1150,580,1180,580,1210,580,1240,580,1271,580,1301,580,1331,580,1361,580,1392,580,1603,596,-1595,596,-1563,596,-1374,596,-1342,596,-1311,596,-1279,596,-1247,596,-1216,596,-1184,596,-1153,596,-1121,596,-1089,596,-1058,596,-1026,596,-995,596,-963,596,-774,596,-742,596,-711,596,-647,596,79,596,111,596,142,596,174,596,300,596,332,596,363,596,395,596,426,596,458,596,489,596,521,596,553,596,584,596,616,596,647,596,679,596,711,596,742,596,774,596,805,596,837,596,868,596,900,596,932,596,963,596,995,596,1026,596,1058,596,1089,596,1121,596,1153,596,1184,596,1216,596,1247,596,1279,596,1311,596,1342,596,1374,596,1405,596,1437,596,1468,596,1532,596,1626,612,-1650,612,-1617,612,-1583,612,-1550,612,-1517,612,-1483,612,-1450,612,-1417,612,-1383,612,-1350,612,-1317,612,-1283,612,-1250,612,-1217,612,-1183,612,-1150,612,-1117,612,-1083,612,-1050,612,-1017,612,-983,612,-950,612,-750,612,-717,612,-483,612,-450,612,83,612,117,612,150,612,217,612,250,612,283,612,317,612,350,612,383,612,417,612,450,612,483,612,517,612,550,612,583,612,617,612,650,612,683,612,717,612,750,612,783,612,817,612,850,612,883,612,917,612,950,612,983,612,1017,612,1050,612,1083,612,1117,612,1150,612,1183,612,1217,612,1250,612,1283,612,1317,612,1350,612,1383,612,1417,612,1450,612,1483,612,1517,612,1550,612,1650,612,1683,612,1717,628,-1643,628,-1608,628,-1573,628,-1538,628,-1503,628,-1468,628,-1433,628,-1398,628,-1363,628,-1328,628,-1293,628,-1258,628,-1223,628,-1188,628,-1153,628,-1118,628,-1083,628,-1049,628,-1014,628,-979,628,-944,628,-699,628,-489,628,-454,628,70,628,105,628,140,628,175,628,245,628,280,628,315,628,350,628,384,628,419,628,454,628,489,628,524,628,559,628,594,628,629,628,664,628,699,628,734,628,769,628,804,628,839,628,874,628,909,628,944,628,979,628,1014,628,1049,628,1083,628,1118,628,1153,628,1188,628,1223,628,1258,628,1293,628,1328,628,1363,628,1398,628,1433,628,1468,628,1503,628,1538,628,1573,628,1608,628,1643,628,1678,628,1713,628,1748,628,1783,644,-1596,644,-1559,644,-1522,644,-1485,644,-1447,644,-1410,644,-1373,644,-1336,644,-1299,644,-1262,644,-1225,644,-1188,644,-1151,644,-1113,644,-1076,644,-1039,644,-1002,644,-965,644,-928,644,-891,644,-854,644,-816,644,-779,644,-705,644,-668,644,-520,644,-482,644,-445,644,-408,644,-186,644,111,644,148,644,186,644,260,644,297,644,334,644,371,644,408,644,445,644,482,644,520,644,557,644,594,644,631,644,668,644,705,644,742,644,779,644,816,644,854,644,891,644,928,644,965,644,1002,644,1039,644,1076,644,1113,644,1151,644,1188,644,1225,644,1262,644,1299,644,1336,644,1373,644,1410,644,1447,644,1485,644,1522,644,1559,644,1596,644,1633,644,1670,644,1707,644,1744,660,-1663,660,-1624,660,-1585,660,-1546,660,-1507,660,-1467,660,-1428,660,-1389,660,-1350,660,-1311,660,-1272,660,-1233,660,-1193,660,-1154,660,-1115,660,-1076,660,-1037,660,-998,660,-959,660,-920,660,-880,660,-841,660,-802,660,-763,660,-724,660,-685,660,-646,660,-607,660,-567,660,-528,660,-489,660,-450,660,-411,660,-372,660,-333,660,-293,660,-254,660,-215,660,-176,660,-137,660,-98,660,-59,660,-20,660,20,660,59,660,98,660,372,676,-1737,676,-1695,676,-1653,676,-1612,676,-1570,676,-1528,676,-1486,676,-1444,676,-1402,676,-1360,676,-1319,676,-1277,676,-1235,676,-1193,676,-1151,676,-1109,676,-1067,676,-1026,676,-984,676,-942,676,-900,676,-858,676,-816,676,-774,676,-733,676,-691,676,-649,676,-607,676,-565,676,-523,676,-481,676,-440,676,-398,676,-356,676,-314,676,-272,676,-230,676,-188,676,-147,676,-105,676,-63,676,-21,676,21,676,63,676,105,676,481,676,733,692,-1598,692,-1552,692,-1508,692,-1462,692,-1418,692,-1328,692,-1282,692,-1238,692,-1192,692,-1148,692,-1102,692,-1058,692,-968,692,-922,692,-832,692,-742,692,-698,692,-472,692,-428,692,-382,692,-338,692,-292,692,158,692,382,692,428,692,472,692,518,692,562,692,652,692,1688,708,-1581,708,-1532,708,-1143,708,-1095,708,-1046,708,-949,708,-851,708,-803,708,-754,708,-705,708,-511,708,-462,708,-414,708,-365,708,-316,708,-268,708,-219,708,268,708,559,708,705,708,754,708,803,708,851,708,900,708,949,708,997,708,1046,708,1095,708,1143,708,1192,708,1241,708,1289,708,1338,708,1386,708,1435,708,1484,708,1532,708,1581,724,-1244,724,-1138,724,-979,724,-874,724,-821,724,-768,724,-503,724,-450,724,-397,724,-344,724,-291,724,715,724,821,724,874,724,926,724,979,724,1032,724,1085,724,1138,724,1191,724,1244,724,1403,724,1456,740,-1190,740,-552,740,-494,740,-435,740,-377,740,-319,740,-261,740,552,740,900,740,958,740,1016,740,1074,756,-1125,756,-1061,756,-996,756,-546,756,-482,756,-418,756,-354,756,-289,756,-225,756,611,756,932,756,996,756,1061,756,1125,756,1382,756,1446,772,-1188,772,-828,772,-684,772,-612,772,-540,772,-468,772,-396,772,-324,772,-252,772,1044,788,-1023,788,-859,788,-777,788,-695,788,-614,788,-532,788,-450,788,-368,788,-286,788,-205,788,123,788,205,788,1023,804,-900,804,-805,804,-711,804,-616,804,-521,804,-426,804,-332,804,-237,804,237,820,-813,820,-697,820,-581,820,-348,820,-232];
+  const D2R = Math.PI / 180;
+  const vec = (la, lo) => { la *= D2R; lo *= D2R; return [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)]; };
+  const land = []; for (let i = 0; i < DOTS.length; i += 2) land.push(vec(DOTS[i] / 10, DOTS[i + 1] / 10));
+  const HOME = vec(-26.72, -53.52);
+  const DEST = [ // onde a FT já trabalhou (resposta da FT, 13/11): pontos no meio de cada estado/país
+    [-27.25, -50.20, 0], [-24.60, -51.60, 0], [-16.00, -49.60, 0], [-8.30, -37.90, 0],
+    [-25.30, -57.60, 1], [-33.00, -61.00, 1], [24.00, 45.00, 1],
+  ].map(([la, lo, ext], i) => {
+    const b = vec(la, lo), w = Math.acos(Math.min(1, HOME[0] * b[0] + HOME[1] * b[1] + HOME[2] * b[2]));
+    return { b, w, ext, h: .05 + w * .2, p: 0, delay: i * .07 };
+  });
+  const cv = $('#globe'), g = cv.getContext('2d'), secE = $('#s-alcance');
+  let lon0 = -40, lat0 = -18, spin = 3, gVis = false, gRaf = 0, gLast = 0, wasOn = false, onAt = 0, drag = null, cw = 0, dpr = 1;
+
+  function view(v, s = 1) {
+    const cl = Math.cos(lon0 * D2R), sl = Math.sin(lon0 * D2R), cp = Math.cos(lat0 * D2R), sp = Math.sin(lat0 * D2R);
+    const x1 = v[0] * cl + v[1] * sl, y1 = -v[0] * sl + v[1] * cl, z1 = v[2];
+    return [y1 * s, (-x1 * sp + z1 * cp) * s, (x1 * cp + z1 * sp) * s]; // direita, cima, profundidade
+  }
+  function slerp(a, b, w, t) {
+    const s = Math.sin(w) || 1, k0 = Math.sin((1 - t) * w) / s, k1 = Math.sin(t * w) / s;
+    return [a[0] * k0 + b[0] * k1, a[1] * k0 + b[1] * k1, a[2] * k0 + b[2] * k1];
+  }
+  function sizeGlobe() { dpr = Math.min(2, devicePixelRatio || 1); cw = cv.clientWidth; cv.width = cw * dpr; cv.height = cw * dpr; }
+
+  function paint(now) {
+    const on = secE.classList.contains('on');
+    const dt = gLast ? Math.min(.05, (now - gLast) / 1000) : 0; gLast = now;
+    if (on && !wasOn) { onAt = now; DEST.forEach(d => d.p = 0); }
+    if (!on) DEST.forEach(d => d.p = 0);
+    wasOn = on;
+    const since = on ? (now - onAt) / 1000 : 0;
+
+    if (!drag) {
+      if (on && since < .7) { // volta para mostrar a base enquanto os arcos já saem
+        let d = ((-35 - lon0 + 540) % 360) - 180; lon0 += d * Math.min(1, dt * 9); lat0 += (-15 - lat0) * Math.min(1, dt * 9);
+      } else { spin += (3 - spin) * Math.min(1, dt * 1.5); lon0 += spin * dt; }
+    }
+    if (on) DEST.forEach(d => { d.p = Math.min(1, Math.max(0, (since - .15 - d.delay) / .65)); });
+
+    const W = cw * dpr, R = W / 2 * .84, cx = W / 2, cy = W / 2;
+    g.clearRect(0, 0, W, W);
+    let gr = g.createRadialGradient(cx, cy, R * .9, cx, cy, R * 1.22);
+    gr.addColorStop(0, 'rgba(29,90,66,.45)'); gr.addColorStop(1, 'rgba(29,90,66,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, R * 1.22, 0, 7); g.fill();
+    gr = g.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R);
+    gr.addColorStop(0, '#1d3a31'); gr.addColorStop(1, '#0b1411');
+    g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, R, 0, 7); g.fill();
+    g.strokeStyle = 'rgba(244,180,15,.10)'; g.lineWidth = dpr; g.stroke();
+
+    const u = R / 150;
+    for (let b = 0; b < 4; b++) {
+      g.fillStyle = `rgba(150,205,175,${(.16 + b * .17).toFixed(2)})`;
+      for (const v of land) {
+        const [x, y, z] = view(v); if (z <= 0) continue;
+        if (Math.min(3, (z * 4) | 0) !== b) continue;
+        const s = (.7 + z * 1.1) * u;
+        g.fillRect(cx + x * R - s / 2, cy - y * R - s / 2, s, s);
+      }
+    }
+
+    DEST.forEach((d, i) => {
+      if (d.p <= 0) return;
+      const col = d.ext ? '243,241,234' : '244,180,15', N = 48, end = Math.ceil(N * d.p);
+      g.lineWidth = 1.6 * dpr; g.strokeStyle = `rgba(${col},.85)`; g.shadowColor = `rgba(${col},.8)`; g.shadowBlur = 8 * dpr;
+      g.beginPath(); let pen = false;
+      for (let k = 0; k <= end; k++) {
+        const t = Math.min(k / N, d.p), v = slerp(HOME, d.b, d.w, t), [x, y, z] = view(v, 1 + d.h * Math.sin(Math.PI * t));
+        const vis = z > 0 || x * x + y * y > 1;
+        if (vis) { pen ? g.lineTo(cx + x * R, cy - y * R) : g.moveTo(cx + x * R, cy - y * R); pen = true; } else pen = false;
+      }
+      g.stroke(); g.shadowBlur = 0;
+      const tp = d.p < 1 ? d.p : (now / 1000 * .45 + i * .23) % 1;
+      const [hx, hy, hz] = view(slerp(HOME, d.b, d.w, tp), 1 + d.h * Math.sin(Math.PI * tp));
+      if (hz > 0 || hx * hx + hy * hy > 1) { g.fillStyle = '#fff6d8'; g.beginPath(); g.arc(cx + hx * R, cy - hy * R, 2.2 * dpr, 0, 7); g.fill(); }
+      if (d.p >= 1) { const [ex, ey, ez] = view(d.b); if (ez > 0) { g.fillStyle = `rgb(${col})`; g.beginPath(); g.arc(cx + ex * R, cy - ey * R, 2.6 * dpr, 0, 7); g.fill(); } }
+    });
+
+    const [hx, hy, hz] = view(HOME);
+    if (hz > 0) {
+      const X = cx + hx * R, Y = cy - hy * R, ph = (now / 1600) % 1;
+      g.strokeStyle = `rgba(244,180,15,${1 - ph})`; g.lineWidth = 1.5 * dpr; g.beginPath(); g.arc(X, Y, (4 + ph * 16) * dpr, 0, 7); g.stroke();
+      g.fillStyle = '#f4b40f'; g.beginPath(); g.arc(X, Y, 4 * dpr, 0, 7); g.fill();
+      g.font = `600 ${12 * dpr}px Urbanist, sans-serif`; g.fillStyle = 'rgba(243,241,234,' + Math.min(1, hz * 2).toFixed(2) + ')';
+      g.fillText('São Miguel do Oeste', X + 9 * dpr, Y + 4 * dpr);
+    }
+    gRaf = gVis && !reduce ? requestAnimationFrame(paint) : 0;
+  }
+  const kick = () => { if (!gRaf) { gLast = 0; gRaf = requestAnimationFrame(paint); } };
+  new IntersectionObserver(es => { gVis = es[es.length - 1].isIntersecting; if (gVis) kick(); }).observe(cv);
+  addEventListener('resize', () => { sizeGlobe(); kick(); });
+  sizeGlobe();
+  // arrastar na horizontal gira o globo; na vertical a página continua rolando (touch-action: pan-y)
+  cv.addEventListener('pointerdown', e => { drag = { x: e.clientX, t: performance.now(), v: 0 }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const now = performance.now(), d = -(e.clientX - drag.x) / (cw * .42) * 57.3;
+    lon0 += d; drag.v = d / Math.max(.008, (now - drag.t) / 1000); drag.x = e.clientX; drag.t = now; kick();
+  });
+  const drop = () => { if (drag) { spin = Math.max(-90, Math.min(90, drag.v)); drag = null; } };
+  cv.addEventListener('pointerup', drop); cv.addEventListener('pointercancel', drop);
+  secE.addEventListener('transitionend', kick);
+
+
+  // ---- roda de obras: a rolagem da página gira a roda. Enquanto a roda está presa no meio da tela, cada trecho de
+  // rolagem traz uma peça para a frente, pelos próprios botões da lista do componente (o anel não aparece: a roda já
+  // entra na primeira peça). Marcas de encaixe (scroll-snap) fazem cada deslizada do dedo assentar numa peça.
+  {
+    const host = $('#roda-obras'), pin = host && host.parentElement, track = pin && pin.parentElement;
+    if (host) {
+      host.addEventListener('wheel', e => e.stopPropagation(), true);
+      let cur = -1, queued = false, snaps = [];
+      const geo = () => {
+        const top = parseFloat(getComputedStyle(pin).top) || 0;
+        return { top, span: track.offsetHeight - pin.offsetHeight };
+      };
+      const placeSnaps = n => {
+        const { top, span } = geo();
+        if (snaps.length !== n) {
+          snaps.forEach(el => el.remove());
+          snaps = Array.from({ length: n }, () => { const el = document.createElement('i'); el.className = 'ww-snap'; track.appendChild(el); return el; });
+        }
+        snaps.forEach((el, k) => { el.style.top = (span * (k + .5) / n - top) + 'px'; });
+        // o seletor: um LED por obra; tocar num LED rola a página até ela
+        const rail = $('#ww-rail');
+        if (rail.querySelectorAll('button').length !== n) {
+          rail.querySelectorAll('button').forEach(b => b.remove());
+          $('#ww-t').textContent = String(n).padStart(2, '0');
+          for (let k = 0; k < n; k++) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.setAttribute('aria-label', 'Obra ' + (k + 1));
+            b.style.top = ((k + .5) / n * 100) + '%';
+            b.onclick = () => scrollTo({ top: scrollY + snaps[k].getBoundingClientRect().top, behavior: 'smooth' });
+            rail.appendChild(b);
+          }
+        }
+      };
+      const sync = () => {
+        queued = false;
+        const btns = host.querySelectorAll('.ww-index button');
+        if (!btns.length) { setTimeout(ask, 120); return; }
+        if (snaps.length !== btns.length) placeSnaps(btns.length);
+        const { top, span } = geo(), r = track.getBoundingClientRect();
+        const p = Math.min(.9999, Math.max(0, (top - r.top) / span));
+        const idx = Math.floor(p * btns.length);
+        $('#ww-knob').style.top = (Math.min(1, Math.max(0, p)) * 100) + '%';
+        if (idx === cur) return;
+        if (cur >= 0 && idx !== cur) pin.classList.add('used');
+        $('#ww-n').textContent = String(idx + 1).padStart(2, '0');
+        $$('#ww-rail button').forEach((b, k) => b.classList.toggle('on', k <= idx));
+        cur = idx;
+        btns[idx].click();
+      };
+      const ask = () => { if (!queued) { queued = true; requestAnimationFrame(sync); } };
+      addEventListener('scroll', ask, { passive: true });
+      addEventListener('resize', () => { snaps.length && placeSnaps(snaps.length); ask(); });
+      ask();
+    }
+  }
+
+  const go = () => {
+    hero.classList.add('struck');
+    build();
+    setTimeout(() => { ready = true; sy = scrollY; draw(true); }, reduce ? 0 : 1100);
+  };
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(() => setTimeout(go, reduce ? 0 : 250)));
+})();
+</script>
+<script src="roda.js" defer></script>
+</body>
+</html>
